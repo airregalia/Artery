@@ -18,10 +18,16 @@ document.getElementById("get-location").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("predictionForm");
     const resultDiv = document.getElementById("results");
+    const loadingDiv = document.getElementById("loading");
+    const submitButton = form.querySelector('input[type="submit"]');
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
-
+        // Disable submit and show loading
+        submitButton.disabled = true;
+        loadingDiv.style.display = 'block';
+        resultDiv.style.display = 'none';
+        resultDiv.innerHTML = "";
         const generalLocation = parseInt(document.getElementById("generalLocation").value, 10);
         const latitude = parseFloat(document.getElementById("latitude").value);
         const longitude = parseFloat(document.getElementById("longitude").value);
@@ -71,6 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (error) {
             resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+        } finally {
+            // Always hide loading and re-enable submit
+            loadingDiv.style.display = 'none';
+            submitButton.disabled = false;
         }
     });
 });
